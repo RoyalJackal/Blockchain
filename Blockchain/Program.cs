@@ -11,7 +11,7 @@ namespace Blockchain
     {
         private static void Main(string[] args)
         {
-            Task2();
+            Task3();
         }
 
         private static void Task1()
@@ -52,6 +52,17 @@ namespace Blockchain
 
             blockchain.Print();
             blockchain.Verify();
+        }
+
+        private static void Task3()
+        {
+            var perHour = Requests.Requests.PerHour();
+            var perDay = Requests.Requests.PerDay();
+            var perMonday = Requests.Requests.PerMonday();
+            var perSunday = Requests.Requests.PerSunday();
+            var perWeek = Requests.Requests.PerWeek();
+            var perMonth = Requests.Requests.PerMonth();
+            Console.ReadKey();
         }
     }
 }
