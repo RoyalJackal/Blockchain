@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using Blockchain.Task1;
 using Blockchain.Task2;
+using static Blockchain.Requests.Requests;
 
 namespace Blockchain
 {
@@ -56,12 +58,27 @@ namespace Blockchain
 
         private static void Task3()
         {
-            var perHour = Requests.Requests.PerHour();
-            var perDay = Requests.Requests.PerDay();
-            var perMonday = Requests.Requests.PerMonday();
-            var perSunday = Requests.Requests.PerSunday();
-            var perWeek = Requests.Requests.PerWeek();
-            var perMonth = Requests.Requests.PerMonth();
+            Console.WriteLine($"Интенсивность потока заявок = {Lambda} заявок/час");
+            Console.WriteLine($"Процент необработанных заявок: {POtk * 100}%");
+            Console.WriteLine($"Среднее время в очереди: {W0} часов");
+            Console.WriteLine($"Средняя сумма от штафов в месяц: {PenaltyCount} * x рублей");
+            var x = CalcX(20);
+            Console.WriteLine($"X я двадцати ядер: {x} рублей");
+
+            
+            var minPrice = Price(x * 3, 1);
+            var minCores = 1;
+            for (int i = 2; i <= 100; i++)
+            {
+                var curPrice = Price(x * 3, i);
+                if (curPrice < minPrice)
+                {
+                    minPrice = curPrice;
+                    minCores = i;
+                }
+            }
+
+            Console.WriteLine($"Оптимальное количество ядер для штрафа размером x*3: {minCores}");
             Console.ReadKey();
         }
     }
