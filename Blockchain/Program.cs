@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using Blockchain.Currencies;
 using Blockchain.Task1;
 using Blockchain.Task2;
 using static Blockchain.Requests.Requests;
@@ -13,7 +14,7 @@ namespace Blockchain
     {
         private static void Main(string[] args)
         {
-            Task3();
+            Task4();
         }
 
         private static void Task1()
@@ -63,9 +64,8 @@ namespace Blockchain
             Console.WriteLine($"Среднее время в очереди: {W0} часов");
             Console.WriteLine($"Средняя сумма от штафов в месяц: {PenaltyCount} * x рублей");
             var x = CalcX(20);
-            Console.WriteLine($"X я двадцати ядер: {x} рублей");
+            Console.WriteLine($"X для двадцати ядер: {x} рублей");
 
-            
             var minPrice = Price(x * 3, 1);
             var minCores = 1;
             for (int i = 2; i <= 100; i++)
@@ -80,6 +80,35 @@ namespace Blockchain
 
             Console.WriteLine($"Оптимальное количество ядер для штрафа размером x*3: {minCores}");
             Console.ReadKey();
+        }
+
+        private static void Task4()
+        {
+            //HUF EUR USD NOK
+            var usdhuf = DataConverter.FetchData(DataConverter.HUFPath);
+            var eurrub = DataConverter.FetchData(DataConverter.EURPath);
+            var usdrub = DataConverter.FetchData(DataConverter.USDPath);
+            var usdnok = DataConverter.FetchData(DataConverter.NOKPath);
+
+            var hufrub = DataConverter.Convert(usdhuf, usdrub);
+            var nokrub = DataConverter.Convert(usdnok, usdrub);
+
+            var portions = Currencies.Currencies.MakePortions(hufrub, eurrub, usdrub, nokrub, Constants.PortionSize);
+
+            foreach (var portion in portions)
+                portion.Print();
+
+            Console.WriteLine();
+            Console.WriteLine("-----------------------------------------");
+            Console.WriteLine();
+
+            var matrix = Currencies.Currencies.MakeMatrix(portions);
+
+            Currencies.Currencies.PrintMatrix(matrix);
+
+            var s = Currencies.Currencies.GetMostValuableS(matrix, out var value);
+
+            Console.WriteLine($"Самая прибильная выборка - {s}, со средней прибылью = {value}.");
         }
     }
 }
