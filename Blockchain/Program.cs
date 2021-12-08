@@ -106,9 +106,16 @@ namespace Blockchain
 
             Currencies.Currencies.PrintMatrix(matrix);
 
-            var s = Currencies.Currencies.GetMostValuableS(matrix, out var value);
+            var sScores = new List<int> { 0, 0, 0, 0 };
+            Currencies.Currencies.Bayes(matrix, sScores, out sScores);
+            Currencies.Currencies.Hurwitz(matrix, 0.6, sScores, out sScores);
+            Currencies.Currencies.Optimistic(matrix, sScores, out sScores);
+            Currencies.Currencies.Savage(matrix, sScores, out sScores);
+            Currencies.Currencies.Wald(matrix, sScores, out sScores);
 
-            Console.WriteLine($"Самая прибильная выборка - {s}, со средней прибылью = {value}.");
+            var s = $"s{sScores.IndexOf(sScores.Max()) + 1}";
+
+            Currencies.Currencies.GetUrl(matrix, "HUF", "EUR", "USD", "NOK", "Орлов Дмитрий Павлович, 11-808", s);
         }
     }
 }
