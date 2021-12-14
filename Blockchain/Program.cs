@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using Blockchain.Currencies;
+using Blockchain.Expert;
+using Blockchain.Expert.Enums;
 using Blockchain.Task1;
 using Blockchain.Task2;
 using static Blockchain.Requests.Requests;
@@ -14,7 +16,7 @@ namespace Blockchain
     {
         private static void Main(string[] args)
         {
-            Task4();
+            Task5();
         }
 
         private static void Task1()
@@ -116,6 +118,16 @@ namespace Blockchain
             var s = $"s{sScores.IndexOf(sScores.Max()) + 1}";
 
             Currencies.Currencies.GetUrl(matrix, "HUF", "EUR", "USD", "NOK", "Орлов Дмитрий Павлович, 11-808", s);
+        }
+
+        private static void Task5()
+        {
+            var patientComplaints = DataFetcher.Fetch<PatientComplaint>();
+            var doctorInspections = DataFetcher.Fetch<DoctorInspection>();
+            var labResults = DataFetcher.Fetch<LabResult>();
+
+            var result = KnowledgeBase.MockTree.TraverseTree(patientComplaints, doctorInspections, labResults);
+            Console.WriteLine(result == null ? "result is null" : result.Prescription);
         }
     }
 }
